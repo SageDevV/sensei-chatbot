@@ -27,6 +27,8 @@ STATUS_COMPLETED = "completed"
 STATUS_REQUIRES_ACTION = "requires_action" 
 
 caminho_imagem_enviada = None
+caminho_arquivo_enviada = None
+
 UPLOAD_FOLDER = 'dados' 
 
 def bot(prompt):
@@ -76,7 +78,7 @@ def bot(prompt):
             
 
 
-@app.route('/upload_imagem', methods=['POST'])
+@app.route('/upload_arquivo', methods=['POST'])
 def upload_imagem():
     global caminho_imagem_enviada
     if 'imagem' in request.files:
@@ -88,7 +90,15 @@ def upload_imagem():
         caminho_imagem_enviada = caminho_arquivo
 
         return 'Imagem recebida com sucesso!', 200
+    if 'arquivo' in request.files:
+        print(request.files)
+        arquivo_enviado = request.files['arquivo']
+        nome_arquivo = str(uuid.uuid4()) + os.path.splitext(arquivo_enviado.filename)[1]
+        caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
+        arquivo_enviado.save(caminho_arquivo)
+        
     return 'Nenhum arquivo foi enviado', 400
+
 
 @app.route("/chat", methods=["POST"])
 def chat():

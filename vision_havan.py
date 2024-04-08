@@ -15,7 +15,6 @@ def analisar_imagem(caminho_imagem):
     """
     print(caminho_imagem)
     imagem_base64 = encodar_imagem(caminho_imagem)
-    print(imagem_base64)
 
     resposta = cliente.chat.completions.create(
         model=modelo,

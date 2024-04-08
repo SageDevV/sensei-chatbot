@@ -8,34 +8,51 @@ let miniaturaImagem;
 async function pegarImagem() {
     let fileInput = document.createElement('input');
     fileInput.type = 'file';
-    fileInput.accept = 'image/*';
+    fileInput.accept = 'image/*, text/plain';
 
     fileInput.onchange = async e => {
         if (miniaturaImagem) {
             miniaturaImagem.remove(); 
         }
 
-        imagemSelecionada = e.target.files[0];
+        arquivoSelecionado = e.target.files[0];
 
-        miniaturaImagem = document.createElement('img');
-        miniaturaImagem.src = URL.createObjectURL(imagemSelecionada);
-        miniaturaImagem.style.maxWidth = '3rem'; 
-        miniaturaImagem.style.maxHeight = '3rem';
-        miniaturaImagem.style.margin = '0.5rem'; 
+        let extensaoArquivo = arquivoSelecionado.name.split('.').pop().toLowerCase();
 
-        document.querySelector('.entrada__container').insertBefore(miniaturaImagem, input);
+        if(extensaoArquivo !== 'txt'){
+            miniaturaImagem = document.createElement('img');
+            miniaturaImagem.src = URL.createObjectURL(arquivoSelecionado);
+            miniaturaImagem.style.maxWidth = '3rem'; 
+            miniaturaImagem.style.maxHeight = '3rem';
+            miniaturaImagem.style.margin = '0.5rem'; 
 
-        let formData = new FormData();
-        formData.append('imagem', imagemSelecionada);
+            document.querySelector('.entrada__container').insertBefore(miniaturaImagem, input);
 
-        const response = await fetch('http://127.0.0.1:5000/upload_imagem', {
-            method: 'POST',
-            body: formData
-        });
+            let formData = new FormData();
+            formData.append('imagem', arquivoSelecionado);
 
-        const resposta = await response.text();
-        console.log(resposta);
-        console.log(imagemSelecionada);
+            const response = await fetch('http://127.0.0.1:5000/upload_arquivo', {
+                method: 'POST',
+                body: formData
+            });
+
+            const resposta = await response.text();
+            console.log(resposta);
+            console.log(imagemSelecionada);
+        }
+        else{
+            let formData = new FormData();
+            formData.append('arquivo', arquivoSelecionado);
+
+            const response = await fetch('http://127.0.0.1:5000/upload_arquivo', {
+                method: 'POST',
+                body: formData
+            });
+
+            const resposta = await response.text();
+            console.log(resposta);
+            console.log(arquivoSelecionado);
+        }
     }
     fileInput.click();
 }
