@@ -133,3 +133,34 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Ignorar a pasta dados
+dados/
+
+# Ignorar arquivos desnecessários de Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.py[co]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Ignorar arquivos desnecessários de JavaScript
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignorar arquivos específicos do ambiente de desenvolvimento Python
+*.env
+*.venv
+*.pyenv
+.env/
+.venv/
+.pyenv/
+*.log
+*.csv
+*.json
+*.sqlite
