@@ -10,29 +10,16 @@ load_dotenv()
 
 cliente = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 modelo = "gpt-4-1106-preview"
-contexto = carrega("dados/ecomart.txt")
+contexto = carrega("dados/havan.txt")
 
 def criar_lista_ids():
     lista_ids_arquivos = []
 
     file_dados = cliente.files.create(
-        file=open("dados/dados_ecomart.txt", "rb"),
+        file=open("dados/shippingbuffer.txt", "rb"),
         purpose="assistants"
     )
     lista_ids_arquivos.append(file_dados.id)
-
-    file_politicas = cliente.files.create(
-        file=open("dados/políticas_ecomart.txt", "rb"),
-        purpose="assistants"
-    )
-    lista_ids_arquivos.append(file_politicas.id)
-
-    file_produtos = cliente.files.create(
-        file=open("dados/produtos_ecomart.txt","rb"),
-        purpose="assistants"
-    )
-
-    lista_ids_arquivos.append(file_produtos.id)
 
     return lista_ids_arquivos
 
@@ -70,20 +57,6 @@ def criar_assistente(file_ids=[]):
         instructions = 
         f"""
             # Seu papel como assistente é oferecer uma experiência boa para o usuário que irá querer aprender sobre os processos da empresa Havan.
-
-            # FAQ:
-
-            Q: Quem é você?
-            A: Meu nome é Sensei e serei seu assistente para auxiliar em suas dúvidas quanto aos processos da Havan.
-
-            Q: Qual é seu objetivo?
-            A: Oferecer a melhor experiência para todos os funcionários da Havan quantos aos processos e produtos da mesma.
-
-            Q: Quais são as áreas de foco da Havan?
-            A: Logística, Financeiro, Contabilidade, Fiscal, Marketing e PDV
-
-            Q: Qual é a base de dados mais consumida da Havan?
-            A: Base de dados Itlsys. SGBD Sql server
         """,
         model = modelo,
         file_ids = file_ids,

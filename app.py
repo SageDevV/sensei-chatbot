@@ -7,7 +7,7 @@ from helpers import *
 from selecionar_persona import *
 from selecionar_documento import *
 from assistente_havan import *
-from vision_ecomart import analisar_imagem
+from vision_havan import analisar_imagem
 import uuid 
 
 load_dotenv()
@@ -52,20 +52,6 @@ def bot(prompt):
                 file_ids=file_ids
             )
 
-            resposta_vision = ""
-            if caminho_imagem_enviada != None:
-                resposta_vision = analisar_imagem(caminho_imagem_enviada)
-                resposta_vision+= ". Na resposta final, apresente detalhes da descrição da imagem."
-                os.remove(caminho_imagem_enviada)
-                caminho_imagem_enviada = None
-
-            cliente.beta.threads.messages.create(
-                thread_id=thread_id, 
-                role = "user",
-                content =  resposta_vision+prompt,
-                file_ids=file_ids
-            )
-
             run = cliente.beta.threads.runs.create(
                 thread_id=thread_id,
                 assistant_id=assistente_id
@@ -106,13 +92,28 @@ def upload_imagem():
 
 @app.route("/chat", methods=["POST"])
 def chat():
+    global caminho_imagem_enviada
     prompt = request.json["msg"]
+    
+    resposta_vision = ""            
+    if caminho_imagem_enviada != None:
+        resposta_vision = analisar_imagem(caminho_imagem_enviada)
+        os.remove(caminho_imagem_enviada)
+        caminho_imagem_enviada = None
+        return resposta_vision
+    
     resposta = bot(prompt)
+    print(resposta)
     if hasattr(resposta, 'content') and resposta.content:
         texto_resposta = resposta.content[0].text.value
     else:
         texto_resposta = None
+        
     return texto_resposta
+
+@app.route("/transcricao")
+def transcricao():
+    return render_template("transcricao.html")
 
 @app.route("/")
 def home():
