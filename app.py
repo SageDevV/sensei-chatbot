@@ -12,7 +12,7 @@ import uuid
 load_dotenv()
 
 cliente = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-modelo = "gpt-4-1106-preview"
+modelo = "gpt-3.5-turbo"
 
 app = Flask(__name__)
 app.secret_key = 'alura'

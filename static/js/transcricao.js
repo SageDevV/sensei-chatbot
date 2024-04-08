@@ -41,6 +41,14 @@ async function pegarImagem() {
             console.log(imagemSelecionada);
         }
         else{
+            miniaturaImagem = document.createElement('img');
+            miniaturaImagem.src = "../static/img/txt.png";
+            miniaturaImagem.style.maxWidth = '3rem'; 
+            miniaturaImagem.style.maxHeight = '3rem';
+            miniaturaImagem.style.margin = '0.5rem'; 
+
+            document.querySelector('.entrada__container').insertBefore(miniaturaImagem, input);
+
             let formData = new FormData();
             formData.append('arquivo', arquivoSelecionado);
 
@@ -75,7 +83,6 @@ async function enviarMensagem() {
     vaiParaFinalDoChat();
     novaBolhaBot.innerHTML = "Analisando ..."
     
-    // Envia requisição com a mensagem para a API do ChatBot
     const resposta = await fetch("http://127.0.0.1:5000/chat", {
         method: "POST",
         headers: {
