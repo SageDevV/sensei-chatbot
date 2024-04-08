@@ -6,7 +6,6 @@ from time import sleep
 from helpers import *
 from selecionar_persona import *
 from selecionar_documento import *
-from assistente_havan import *
 from vision_havan import analisar_imagem
 import uuid 
 
@@ -18,57 +17,54 @@ modelo = "gpt-4-1106-preview"
 app = Flask(__name__)
 app.secret_key = 'alura'
 
-assistente = pegar_json()
-thread_id = assistente["thread_id"]
-assistente_id = assistente["assistant_id"]
-file_ids = assistente["file_ids"]
-
-STATUS_COMPLETED = "completed" 
-STATUS_REQUIRES_ACTION = "requires_action" 
-
 caminho_imagem_enviada = None
 caminho_arquivo_enviada = None
 
 UPLOAD_FOLDER = 'dados' 
 
+shipping_buffer = carrega('dados/shippingbuffer.txt')
+contexto_dinamico = carrega('dados/contextodinamico.txt')
+
 def bot(prompt):
-    global caminho_imagem_enviada
     maximo_tentativas = 1
     repeticao = 0
+    personalidade = selecionar_persona(prompt)
+    contexto = selecionar_contexto(prompt)
+    documento_selecionado = selecionar_documento(contexto)
 
     while True:
         try:
-            personalidade = personas[selecionar_persona(prompt)]
+            prompt_do_sistema = f"""
+            # Seu papel como assistente é oferecer uma experiência boa para o usuário que irá querer aprender sobre os processos da empresa Havan.
 
-            cliente.beta.threads.messages.create(
-                thread_id=thread_id, 
-                role = "user",
-                content =  f"""
-                
-                Assuma, de agora em diante, a personalidade abaixo. 
-                Ignore as personalidades anteriores.
-
-                # Persona
-                {personalidade}
-                """,
-                file_ids=file_ids
-            )
-
-            run = cliente.beta.threads.runs.create(
-                thread_id=thread_id,
-                assistant_id=assistente_id
-            )
-
-            while run.status != STATUS_COMPLETED:
-                run = cliente.beta.threads.runs.retrieve(
-                    thread_id=thread_id,
-                    run_id=run.id
-            )
+            # Você como assistente, deverá utilizar as informações que será fornecido via txt apenas. Não utilize a base de dados da internet para responder os usuários.
+            # Você deve adotar a persona abaixo.
             
-            historico = list(cliente.beta.threads.messages.list(thread_id=thread_id).data)
-            resposta = historico[0]
-            return resposta
-
+            # Contexto
+            {documento_selecionado}
+            
+            # Persona
+            {personalidade}
+            """
+            
+            response = cliente.chat.completions.create(
+                messages=[
+                        {
+                                "role": "system",
+                                "content": prompt_do_sistema
+                        },
+                        {
+                                "role": "user",
+                                "content": prompt
+                        }
+                ],
+                temperature=1,
+                max_tokens=300,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+                model = "gpt-4-1106-preview")
+            return response
         except Exception as erro:
                 repeticao += 1
                 if repeticao >= maximo_tentativas:
@@ -96,6 +92,14 @@ def upload_imagem():
         nome_arquivo = str(uuid.uuid4()) + os.path.splitext(arquivo_enviado.filename)[1]
         caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
         arquivo_enviado.save(caminho_arquivo)
+        dados_arquivo_atual = carrega(caminho_arquivo)
+        print(dados_arquivo_atual)
+        contexto_dinamico = carrega("dados/contextodinamico.txt")
+        print(contexto_dinamico)
+        contexto_dinamico = contexto_dinamico + '\n' + dados_arquivo_atual
+        print(contexto_dinamico)
+        salva("dados/contextodinamico.txt", contexto_dinamico)
+        os.remove(caminho_arquivo)
         
     return 'Nenhum arquivo foi enviado', 400
 
@@ -112,13 +116,9 @@ def chat():
         caminho_imagem_enviada = None
         return resposta_vision
     
+    prompt = request.json["msg"]
     resposta = bot(prompt)
-    print(resposta)
-    if hasattr(resposta, 'content') and resposta.content:
-        texto_resposta = resposta.content[0].text.value
-    else:
-        texto_resposta = None
-        
+    texto_resposta = resposta.choices[0].message.content
     return texto_resposta
 
 @app.route("/transcricao")

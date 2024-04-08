@@ -1,13 +1,13 @@
 # 1.0 ShippingBuffer
-   # 1.1 Instalação do APK do ShippingBuffer
-      Q1: Onde posso encontrar o APK do Shipping Buffer?
-      A1: Você pode encontrar o APK do Shipping Buffer no diretório local "C:\Projetos\Expedicao" no servidor JUMP04.
-      Q2: Qual é o próximo passo após obter o APK?
-      A2: Após obter o APK, siga os passos de instalação:
-         Abra o gerenciador de arquivos do seu dispositivo.
-         Navegue até o diretório local C:\Projetos\Expedicao.
-         Toque no arquivo APK do Shipping Buffer.
-         Ative a opção para permitir a instalação de aplicativos de fontes desconhecidas.
-         Toque em “Instalar” para iniciar a instalação.
-      Q3: Como faço para fazer login no Shipping Buffer?
-      A3: Abra o Shipping Buffer no seu dispositivo. Insira suas credenciais (usuário e senha) para acessar a aplicação.
+# 1.1 Instalação do APK do ShippingBuffer
+Q1: Onde posso encontrar o APK do Shipping Buffer?
+A1: Você pode encontrar o APK do Shipping Buffer no diretório local "C:\Projetos\Expedicao" no servidor JUMP04.
+Q2: Qual é o próximo passo após obter o APK?
+A2: Após obter o APK, siga os passos de instalação:
+Abra o gerenciador de arquivos do seu dispositivo.
+Navegue até o diretório local C:\Projetos\Expedicao.
+Toque no arquivo APK do Shipping Buffer.
+Ative a opção para permitir a instalação de aplicativos de fontes desconhecidas.
+Toque em “Instalar” para iniciar a instalação.
+Q3: Como faço para fazer login no Shipping Buffer?
+A3: Abra o Shipping Buffer no seu dispositivo. Insira suas credenciais (usuário e senha) para acessar a aplicação.
