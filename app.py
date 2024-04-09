@@ -102,6 +102,10 @@ def upload_imagem():
         salva("dados/contextodinamico.txt", contexto_dinamico)
         os.remove(caminho_arquivo)
         restart_program()
+    if 'audio' in request.files:
+        return
+    if 'video' in request.files:
+        return
         
     return 'Nenhum arquivo foi enviado', 400
 
