@@ -8,7 +8,7 @@ let miniaturaImagem;
 async function pegarImagem() {
     let fileInput = document.createElement('input');
     fileInput.type = 'file';
-    fileInput.accept = 'image/*, text/plain';
+    fileInput.accept = 'image/*, text/plain, video/*, audio/*';
 
     fileInput.onchange = async e => {
         if (miniaturaImagem) {
@@ -18,8 +18,11 @@ async function pegarImagem() {
         arquivoSelecionado = e.target.files[0];
 
         let extensaoArquivo = arquivoSelecionado.name.split('.').pop().toLowerCase();
+        let extensoesImagensValidas = ['jpg', 'jpeg', 'png'];
+        let extensoesVideosValidas = ['mp4', 'avi', 'mov'];
+        let extensoesAudiosValidas = ['mp3', 'wav', 'ogg'];
 
-        if(extensaoArquivo !== 'txt'){
+        if(extensoesImagensValidas.includes(extensaoArquivo)){
             miniaturaImagem = document.createElement('img');
             miniaturaImagem.src = URL.createObjectURL(arquivoSelecionado);
             miniaturaImagem.style.maxWidth = '3rem'; 
@@ -40,7 +43,7 @@ async function pegarImagem() {
             console.log(resposta);
             console.log(imagemSelecionada);
         }
-        else{
+        else if (extensaoArquivo === 'txt'){
             miniaturaImagem = document.createElement('img');
             miniaturaImagem.src = "../static/img/txt.png";
             miniaturaImagem.style.maxWidth = '3rem'; 
@@ -60,6 +63,51 @@ async function pegarImagem() {
             const resposta = await response.text();
             console.log(resposta);
             console.log(arquivoSelecionado);
+        }
+        else if (extensoesVideosValidas.includes(extensaoArquivo)){
+            miniaturaImagem = document.createElement('img');
+            miniaturaImagem.src = "../static/img/video.png";
+            miniaturaImagem.style.maxWidth = '3rem'; 
+            miniaturaImagem.style.maxHeight = '3rem';
+            miniaturaImagem.style.margin = '0.5rem'; 
+
+            document.querySelector('.entrada__container').insertBefore(miniaturaImagem, input);
+
+            let formData = new FormData();
+            formData.append('video', arquivoSelecionado);
+
+            const response = await fetch('http://127.0.0.1:5000/upload_arquivo', {
+                method: 'POST',
+                body: formData
+            });
+
+            const resposta = await response.text();
+            console.log(resposta);
+            console.log(arquivoSelecionado);
+        }
+        else if (extensoesAudiosValidas.includes(extensaoArquivo)){
+            miniaturaImagem = document.createElement('img');
+            miniaturaImagem.src = "../static/img/audio.png";
+            miniaturaImagem.style.maxWidth = '3rem'; 
+            miniaturaImagem.style.maxHeight = '3rem';
+            miniaturaImagem.style.margin = '0.5rem'; 
+
+            document.querySelector('.entrada__container').insertBefore(miniaturaImagem, input);
+
+            let formData = new FormData();
+            formData.append('audio', arquivoSelecionado);
+
+            const response = await fetch('http://127.0.0.1:5000/upload_arquivo', {
+                method: 'POST',
+                body: formData
+            });
+
+            const resposta = await response.text();
+            console.log(resposta);
+            console.log(arquivoSelecionado);
+        }
+        else{
+            return
         }
     }
     fileInput.click();

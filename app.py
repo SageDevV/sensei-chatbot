@@ -1,9 +1,10 @@
-from flask import Flask,render_template, request, Response
+from flask import Flask,render_template, request
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import sys
 from time import sleep
+from assemblyapi import transcrever_audio, transcrever_video
 from helpers import *
 from selecionar_persona import *
 from selecionar_documento import *
@@ -103,9 +104,21 @@ def upload_imagem():
         os.remove(caminho_arquivo)
         restart_program()
     if 'audio' in request.files:
-        return
+        audio_enviada = request.files['audio']
+        nome_arquivo = str(uuid.uuid4()) + os.path.splitext(audio_enviada.filename)[1]
+        caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
+        audio_enviada.save(caminho_arquivo)
+        transcrever_audio(audio_enviada)
+        os.remove(caminho_arquivo)
+        restart_program()
     if 'video' in request.files:
-        return
+        video_enviada = request.files['video']
+        nome_arquivo = str(uuid.uuid4()) + os.path.splitext(video_enviada.filename)[1]
+        caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
+        video_enviada.save(caminho_arquivo)
+        transcrever_video(video_enviada)
+        os.remove(caminho_arquivo)
+        restart_program()
         
     return 'Nenhum arquivo foi enviado', 400
 
