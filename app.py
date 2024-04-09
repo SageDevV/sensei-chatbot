@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 import sys
 from time import sleep
-from whisper import transcrever_audio, transcrever_video
+from whisper import transcrever_audio, transcrever_video, gravar_contexto_dinamico
 from helpers import *
 from selecionar_persona import *
 from selecionar_documento import *
@@ -14,7 +14,6 @@ import uuid
 load_dotenv()
 
 cliente = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-modelo = "gpt-3.5-turbo"
 
 app = Flask(__name__)
 app.secret_key = 'alura'
@@ -109,7 +108,8 @@ def upload_imagem():
         caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
         audio_enviada.save(caminho_arquivo)
         print(caminho_arquivo)
-        transcrever_audio(caminho_arquivo)
+        transcription = transcrever_audio(caminho_arquivo)
+        gravar_contexto_dinamico(transcription)
         restart_program()
     if 'video' in request.files:
         video_enviada = request.files['video']
