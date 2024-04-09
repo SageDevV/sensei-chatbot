@@ -107,7 +107,6 @@ def upload_imagem():
         nome_arquivo = str(uuid.uuid4()) + os.path.splitext(audio_enviada.filename)[1]
         caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
         audio_enviada.save(caminho_arquivo)
-        print(caminho_arquivo)
         transcription = transcrever_audio(caminho_arquivo)
         gravar_contexto_dinamico(transcription)
         restart_program()
@@ -116,7 +115,9 @@ def upload_imagem():
         nome_arquivo = str(uuid.uuid4()) + os.path.splitext(video_enviada.filename)[1]
         caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
         video_enviada.save(caminho_arquivo)
-        transcrever_video(caminho_arquivo)
+        transcription = transcrever_video(caminho_arquivo)
+        gravar_contexto_dinamico(transcription)
+        os.remove(caminho_arquivo)
         restart_program()
         
     return 'Nenhum arquivo foi enviado', 400

@@ -22,10 +22,10 @@ def transcrever_audio(caminho_audio):
 
 def transcrever_video(caminho_video):
     clip = mp.VideoFileClip(caminho_video)
-    
-    caminho_audio = "../dados/audio.mp3"
+    caminho_audio = "dados/audio.mp3"
     clip.audio.write_audiofile(caminho_audio)
-    transcrever_audio(caminho_audio)
+    transcription = transcrever_audio(caminho_audio)
+    return transcription
     
 def gravar_contexto_dinamico(transcription):
     cliente = OpenAI()
