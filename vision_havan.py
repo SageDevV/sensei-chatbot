@@ -13,7 +13,6 @@ def analisar_imagem(caminho_imagem):
         Assuma que você é um assistente de chatbot e que provaelmente o usuário está enviado a foto de
         um produto. Faça uma análise dele
     """
-    print(caminho_imagem)
     imagem_base64 = encodar_imagem(caminho_imagem)
 
     resposta = cliente.chat.completions.create(

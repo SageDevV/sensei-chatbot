@@ -2,6 +2,7 @@ from flask import Flask,render_template, request, Response
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import sys
 from time import sleep
 from helpers import *
 from selecionar_persona import *
@@ -24,6 +25,10 @@ UPLOAD_FOLDER = 'dados'
 
 shipping_buffer = carrega('dados/shippingbuffer.txt')
 contexto_dinamico = carrega('dados/contextodinamico.txt')
+
+def restart_program():
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
 def bot(prompt):
     maximo_tentativas = 1
@@ -87,19 +92,16 @@ def upload_imagem():
 
         return 'Imagem recebida com sucesso!', 200
     if 'arquivo' in request.files:
-        print(request.files)
         arquivo_enviado = request.files['arquivo']
         nome_arquivo = str(uuid.uuid4()) + os.path.splitext(arquivo_enviado.filename)[1]
         caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
         arquivo_enviado.save(caminho_arquivo)
         dados_arquivo_atual = carrega(caminho_arquivo)
-        print(dados_arquivo_atual)
         contexto_dinamico = carrega("dados/contextodinamico.txt")
-        print(contexto_dinamico)
         contexto_dinamico = contexto_dinamico + '\n' + dados_arquivo_atual
-        print(contexto_dinamico)
         salva("dados/contextodinamico.txt", contexto_dinamico)
         os.remove(caminho_arquivo)
+        restart_program()
         
     return 'Nenhum arquivo foi enviado', 400
 

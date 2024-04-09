@@ -1,20 +1,7 @@
-Q1: Quando a Havan foi fundada? 
-A1: A Havan foi fundada em 1986.
-Q2: Onde a primeira loja da Havan foi aberta? 
-A2: A primeira loja da Havan foi aberta em Brusque, Santa Catarina.
-Q3: Quem é o diretor-presidente da Havan? 
-A3: O diretor-presidente da Havan é Luciano Hang.
-Q4: Quantos colaboradores a Havan tem? 
-A4: A Havan tem mais de 22 mil colaboradores.
 
 Q5: O que foi inaugurado pela Havan em 2010 em Barra Velha? 
 A5: Em 2010, a Havan inaugurou a Parada Havan em Barra Velha, que abriga o Centro de Distribuição da empresa.
-Q6: A Havan foi premiada como a melhor empresa de varejo do Brasil em algum ano? A6: Sim, a Havan foi premiada como a melhor empresa de varejo do Brasil pela revista Exame em 2019.
-Q7: Quantos anos de história a Havan tem? 
-A7: A Havan tem 37 anos de história.
-
-Q5: O que foi inaugurado pela Havan em 2010 em Barra Velha? 
-A5: Em 2010, a Havan inaugurou a Parada Havan em Barra Velha, que abriga o Centro de Distribuição da empresa.
-Q6: A Havan foi premiada como a melhor empresa de varejo do Brasil em algum ano? A6: Sim, a Havan foi premiada como a melhor empresa de varejo do Brasil pela revista Exame em 2019.
+Q6: A Havan foi premiada como a melhor empresa de varejo do Brasil em algum ano? 
+A6: Sim, a Havan foi premiada como a melhor empresa de varejo do Brasil pela revista Exame em 2019.
 Q7: Quantos anos de história a Havan tem? 
 A7: A Havan tem 37 anos de história.
